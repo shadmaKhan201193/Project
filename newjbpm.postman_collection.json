@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "339edced-17a6-467e-8323-4ca30f1caf7c",
+		"name": "newjbpm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:9055/startProcess/MyProcess1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"MyProcess1\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"start\",\r\n            \"name\": \"StartEvent\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"userEvent\",\r\n            \"eventType\": \"userTask\",\r\n            \"owner\": \"webadmin\",\r\n            \"next\": \"end1\",\r\n            \"previous\": \"start\",\r\n            \"mapvalue\": \"approved\"\r\n        },\r\n        {\r\n            \"id\": \"end1\",\r\n            \"name\": \"endEvent\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task1\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/startProcess/MyProcess1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startProcess",
+						"MyProcess1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/initiateUser/MyProcess1/task1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9055/initiateUser/MyProcess1/task1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"initiateUser",
+						"MyProcess1",
+						"task1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/startUser/MyProcess1/task1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"key1\":\"value1\",\r\n    \"key2\":\"value2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/startUser/MyProcess1/task1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startUser",
+						"MyProcess1",
+						"task1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/createProcess1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"Process2\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"start\",\r\n            \"name\": \"StartEvent\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"userEvent\",\r\n            \"eventType\": \"userTask\",\r\n            \"owner\": \"webadmin\",\r\n            \"next\": \"gateway1\",\r\n            \"previous\": \"start\",\r\n\t\t\t\"mapvalue\":\"approved\"\r\n        },\r\n      \r\n        {\r\n            \"id\": \"gateway1\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n            \"previous\": \"task1\",\r\n\t\t\t\"next\": \"iftask1,iftask2\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask1\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('cibil user Approved');\",\r\n                    \"next\": \"task2\",\r\n                    \"previous\": \"task1\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask2\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user not aprroved');\",\r\n                    \"next\": \"task3\",\r\n                    \"previous\": \"task1\"\r\n                }\r\n            ]\r\n        },\r\n\t\t{\r\n            \"id\": \"task2\",\r\n            \"name\": \"scriptEvent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('script started');\",\r\n            \"next\": \"end1\",\r\n            \"previous\": \"iftask1\",\r\n            \"connId\": \"userTask\"\r\n        },\r\n\t\t {\r\n            \"id\": \"end1\",\r\n            \"name\": \"endEvent\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"iftask1\"\r\n        },\r\n\t\t {\r\n            \"id\": \"task3\",\r\n            \"name\": \"userEvent\",\r\n            \"eventType\": \"userTask\",\r\n            \"owner\": \"webadmin\",\r\n            \"next\": \"task4\",\r\n            \"previous\": \"iftask2\",\r\n\t\t\t\"mapvalue\":\"approved1\"\r\n        },\r\n\t\t{\r\n            \"id\": \"task4\",\r\n            \"name\": \"scriptEvent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('script started');\",\r\n            \"next\": \"end2\",\r\n            \"previous\": \"task3\",\r\n            \"connId\": \"userTask\"\r\n        },\r\n       \r\n       \r\n        {\r\n            \"id\": \"end2\",\r\n            \"name\": \"endEvent\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"iftask2\"\r\n        }\r\n       \r\n    ]\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/startUser/MyProcess1/task1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":\"139\",\r\n    \"owner\":\"approved\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/startUserTaskWithGAteway/Process2/task1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startUserTaskWithGAteway",
+						"Process2",
+						"task1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/startProcess/MyProcess1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9055/startProcessWithGAteway/Process3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startProcessWithGAteway",
+						"Process3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/createProcess3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"Process3\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"startEvent\",\r\n            \"name\": \"Start\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan request generated');\",\r\n            \"next\": \"gateway1\",\r\n            \"previous\": \"startEvent\"\r\n        },\r\n        {\r\n            \"id\": \"gateway1\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"parallelGateway\",\r\n            \"next\": \"task2,task3,task4\",\r\n            \"previous\": \"task1\",\r\n            \"path\": [\r\n                {\r\n                    \"id\": \"task2\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('Account holder details approve');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task3\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending cibil varify');\",\r\n                    \"next\": \"task5\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task4\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending filed varify');\",\r\n                    \"next\": \"task6\",\r\n                    \"previous\": \"gateway1\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task5\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"owner\": \"infraadmin\",\r\n            \"next\": \"gateway2\",\r\n            \"previous\": \"task3\"\r\n        },\r\n        {\r\n            \"id\": \"task6\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"owner\": \"adminuser\",\r\n            \"next\": \"gateway3\",\r\n            \"previous\": \"task4\"\r\n        },\r\n        {\r\n            \"id\": \"gateway2\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n\t\t\t\"next\": \"iftask1,iftask2\",\r\n            \"previous\": \"task5\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask1\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('cibil user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task5\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask2\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user not aprroved');\",\r\n                    \"next\": \"task8\",\r\n                    \"previous\": \"task5\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"gateway3\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n            \"previous\": \"task6\",\r\n\t\t\t\"next\": \"iftask3,iftask4\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask3\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task6\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask4\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field not aprroved');\",\r\n                    \"next\": \"task7\",\r\n                    \"previous\": \"task6\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task7\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by cibill');\",\r\n            \"next\": \"endEvent1\",\r\n            \"previous\": \"gateway3\"\r\n        },\r\n        {\r\n            \"id\": \"task8\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by field officer');\",\r\n            \"next\": \"endEvent2\",\r\n            \"previous\": \"gateway2\"\r\n        },\r\n        {\r\n            \"id\": \"gateway4\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"inclusiveGateway\",\r\n            \"next\": \"task9\",\r\n\t\t\t\"previous\": \"iftask1,iftask3,task2\",\r\n            \"combineFrom\":\"iftask1,iftask3,task2\"\r\n        },\r\n        {\r\n            \"id\": \"task9\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan approved');\",\r\n            \"next\": \"endEvent3\",\r\n            \"previous\": \"gateway4\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent1\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task7\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent2\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task8\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent3\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task9\"\r\n        }\r\n    ]\r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/createProcess3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"Process3\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"startEvent\",\r\n            \"name\": \"Start\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan request generated');\",\r\n            \"next\": \"gateway1\",\r\n            \"previous\": \"startEvent\"\r\n        },\r\n        {\r\n            \"id\": \"gateway1\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"parallelGateway\",\r\n            \"next\": \"task2,task3,task4\",\r\n            \"previous\": \"task1\",\r\n            \"path\": [\r\n                {\r\n                    \"id\": \"task2\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('Account holder details approve');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task3\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending cibil varify');\",\r\n                    \"next\": \"task5\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task4\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending filed varify');\",\r\n                    \"next\": \"task6\",\r\n                    \"previous\": \"gateway1\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task5\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"ROUND_ROBIN\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway2\",\r\n            \"previous\": \"task3\"\r\n        },\r\n        {\r\n            \"id\": \"task6\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"ROUND_ROBIN\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway3\",\r\n            \"previous\": \"task4\"\r\n        },\r\n        {\r\n            \"id\": \"gateway2\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n\t\t\t\"next\": \"iftask1,iftask2\",\r\n            \"previous\": \"task5\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask1\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('cibil user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task5\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask2\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user not aprroved');\",\r\n                    \"next\": \"task8\",\r\n                    \"previous\": \"task5\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"gateway3\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n            \"previous\": \"task6\",\r\n\t\t\t\"next\": \"iftask3,iftask4\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask3\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task6\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask4\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field not aprroved');\",\r\n                    \"next\": \"task7\",\r\n                    \"previous\": \"task6\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task7\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by cibill');\",\r\n            \"next\": \"endEvent1\",\r\n            \"previous\": \"gateway3\"\r\n        },\r\n        {\r\n            \"id\": \"task8\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by field officer');\",\r\n            \"next\": \"endEvent2\",\r\n            \"previous\": \"gateway2\"\r\n        },\r\n        {\r\n            \"id\": \"gateway4\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"inclusiveGateway\",\r\n            \"next\": \"task9\",\r\n\t\t\t\"previous\": \"iftask1,iftask3,task2\",\r\n            \"combineFrom\":\"iftask1,iftask3,task2\"\r\n        },\r\n        {\r\n            \"id\": \"task9\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan approved');\",\r\n            \"next\": \"endEvent3\",\r\n            \"previous\": \"gateway4\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent1\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task7\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent2\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task8\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent3\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task9\"\r\n        }\r\n    ]\r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess"
+					]
+				},
+				"description": "gchgcghc"
+			},
+			"response": []
+		},
+		{
+			"name": "roundrobin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"Process3\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"startEvent\",\r\n            \"name\": \"Start\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan request generated');\",\r\n            \"next\": \"gateway1\",\r\n            \"previous\": \"startEvent\"\r\n        },\r\n        {\r\n            \"id\": \"gateway1\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"parallelGateway\",\r\n            \"next\": \"task2,task3,task4\",\r\n            \"previous\": \"task1\",\r\n            \"path\": [\r\n                {\r\n                    \"id\": \"task2\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('Account holder details approve');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task3\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending cibil varify');\",\r\n                    \"next\": \"task5\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task4\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending filed varify');\",\r\n                    \"next\": \"task6\",\r\n                    \"previous\": \"gateway1\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task5\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"ROUND_ROBIN\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway2\",\r\n            \"previous\": \"task3\"\r\n        },\r\n        {\r\n            \"id\": \"task6\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"ROUND_ROBIN\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway3\",\r\n            \"previous\": \"task4\"\r\n        },\r\n        {\r\n            \"id\": \"gateway2\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n\t\t\t\"next\": \"iftask1,iftask2\",\r\n            \"previous\": \"task5\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask1\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('cibil user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task5\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask2\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user not aprroved');\",\r\n                    \"next\": \"task8\",\r\n                    \"previous\": \"task5\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"gateway3\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n            \"previous\": \"task6\",\r\n\t\t\t\"next\": \"iftask3,iftask4\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask3\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task6\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask4\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field not aprroved');\",\r\n                    \"next\": \"task7\",\r\n                    \"previous\": \"task6\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task7\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by cibill');\",\r\n            \"next\": \"endEvent1\",\r\n            \"previous\": \"gateway3\"\r\n        },\r\n        {\r\n            \"id\": \"task8\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by field officer');\",\r\n            \"next\": \"endEvent2\",\r\n            \"previous\": \"gateway2\"\r\n        },\r\n        {\r\n            \"id\": \"gateway4\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"inclusiveGateway\",\r\n            \"next\": \"task9\",\r\n\t\t\t\"previous\": \"iftask1,iftask3,task2\",\r\n            \"combineFrom\":\"iftask1,iftask3,task2\"\r\n        },\r\n        {\r\n            \"id\": \"task9\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan approved');\",\r\n            \"next\": \"endEvent3\",\r\n            \"previous\": \"gateway4\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent1\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task7\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent2\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task8\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent3\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task9\"\r\n        }\r\n    ]\r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "process2 created for LEAST_LOAD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"Process2\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"startEvent\",\r\n            \"name\": \"Start\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan request generated');\",\r\n            \"next\": \"gateway1\",\r\n            \"previous\": \"startEvent\"\r\n        },\r\n        {\r\n            \"id\": \"gateway1\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"parallelGateway\",\r\n            \"next\": \"task2,task3,task4\",\r\n            \"previous\": \"task1\",\r\n            \"path\": [\r\n                {\r\n                    \"id\": \"task2\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('Account holder details approve');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task3\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending cibil varify');\",\r\n                    \"next\": \"task5\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task4\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending filed varify');\",\r\n                    \"next\": \"task6\",\r\n                    \"previous\": \"gateway1\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task5\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"LEAST_LOAD\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway2\",\r\n            \"previous\": \"task3\"\r\n        },\r\n        {\r\n            \"id\": \"task6\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"LEAST_LOAD\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway3\",\r\n            \"previous\": \"task4\"\r\n        },\r\n        {\r\n            \"id\": \"gateway2\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n\t\t\t\"next\": \"iftask1,iftask2\",\r\n            \"previous\": \"task5\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask1\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('cibil user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task5\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask2\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user not aprroved');\",\r\n                    \"next\": \"task8\",\r\n                    \"previous\": \"task5\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"gateway3\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n            \"previous\": \"task6\",\r\n\t\t\t\"next\": \"iftask3,iftask4\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask3\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task6\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask4\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field not aprroved');\",\r\n                    \"next\": \"task7\",\r\n                    \"previous\": \"task6\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task7\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by cibill');\",\r\n            \"next\": \"endEvent1\",\r\n            \"previous\": \"gateway3\"\r\n        },\r\n        {\r\n            \"id\": \"task8\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by field officer');\",\r\n            \"next\": \"endEvent2\",\r\n            \"previous\": \"gateway2\"\r\n        },\r\n        {\r\n            \"id\": \"gateway4\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"inclusiveGateway\",\r\n            \"next\": \"task9\",\r\n\t\t\t\"previous\": \"iftask1,iftask3,task2\",\r\n            \"combineFrom\":\"iftask1,iftask3,task2\"\r\n        },\r\n        {\r\n            \"id\": \"task9\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan approved');\",\r\n            \"next\": \"endEvent3\",\r\n            \"previous\": \"gateway4\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent1\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task7\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent2\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task8\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent3\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task9\"\r\n        }\r\n    ]\r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "start Process3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9055/startProcessWithGAteway/Process3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startProcessWithGAteway",
+						"Process3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user started for Process3 task5",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tenantId\":\"139\",\r\n    \"owner\":\"approved\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/startUserTaskWithGAteway/Process3/task5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startUserTaskWithGAteway",
+						"Process3",
+						"task5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user started for Process3 task6",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9055/initiateUser/Process3/task6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"initiateUser",
+						"Process3",
+						"task6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "process3 created for round robin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"processname\": \"Process3\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"startEvent\",\r\n            \"name\": \"Start\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan request generated');\",\r\n            \"next\": \"gateway1\",\r\n            \"previous\": \"startEvent\"\r\n        },\r\n        {\r\n            \"id\": \"gateway1\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"parallelGateway\",\r\n            \"next\": \"task2,task3,task4\",\r\n            \"previous\": \"task1\",\r\n            \"path\": [\r\n                {\r\n                    \"id\": \"task2\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('Account holder details approve');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task3\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending cibil varify');\",\r\n                    \"next\": \"task5\",\r\n                    \"previous\": \"gateway1\"\r\n                },\r\n                {\r\n                    \"id\": \"task4\",\r\n                    \"name\": \"scriptevent\",\r\n                    \"eventType\": \"scriptTask\",\r\n                    \"script\": \"System.out.println('pending filed varify');\",\r\n                    \"next\": \"task6\",\r\n                    \"previous\": \"gateway1\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task5\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"ROUND_ROBIN\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway2\",\r\n            \"previous\": \"task3\"\r\n        },\r\n        {\r\n            \"id\": \"task6\",\r\n            \"name\": \"userevent\",\r\n            \"eventType\": \"userTask\",\r\n            \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"ROUND_ROBIN\",\r\n\t\t\t\"mapvalue\": \"approved\",\r\n            \"next\": \"gateway3\",\r\n            \"previous\": \"task4\"\r\n        },\r\n        {\r\n            \"id\": \"gateway2\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n\t\t\t\"next\": \"iftask1,iftask2\",\r\n            \"previous\": \"task5\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask1\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('cibil user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task5\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask2\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user not aprroved');\",\r\n                    \"next\": \"task8\",\r\n                    \"previous\": \"task5\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"gateway3\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"exclusiveGateway\",\r\n            \"previous\": \"task6\",\r\n\t\t\t\"next\": \"iftask3,iftask4\",\r\n            \"condition\": [\r\n                {\r\n                    \"id\": \"iftask3\",\r\n                    \"name\": \"trueEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field user Approved');\",\r\n                    \"next\": \"gateway4\",\r\n                    \"previous\": \"task6\"\r\n                },\r\n                {\r\n                    \"id\": \"iftask4\",\r\n                    \"name\": \"falseEvent\",\r\n                    \"eventType\": \"iftask\",\r\n                    \"script\": \"System.out.println('field not aprroved');\",\r\n                    \"next\": \"task7\",\r\n                    \"previous\": \"task6\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"id\": \"task7\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by cibill');\",\r\n            \"next\": \"endEvent1\",\r\n            \"previous\": \"gateway3\"\r\n        },\r\n        {\r\n            \"id\": \"task8\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan rejected by field officer');\",\r\n            \"next\": \"endEvent2\",\r\n            \"previous\": \"gateway2\"\r\n        },\r\n        {\r\n            \"id\": \"gateway4\",\r\n            \"name\": \"gatewayevent\",\r\n            \"eventType\": \"inclusiveGateway\",\r\n            \"next\": \"task9\",\r\n\t\t\t\"previous\": \"iftask1,iftask3,task2\",\r\n            \"combineFrom\":\"iftask1,iftask3,task2\"\r\n        },\r\n        {\r\n            \"id\": \"task9\",\r\n            \"name\": \"scriptevent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('loan approved');\",\r\n            \"next\": \"endEvent3\",\r\n            \"previous\": \"gateway4\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent1\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task7\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent2\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task8\"\r\n        },\r\n        {\r\n            \"id\": \"endEvent3\",\r\n            \"name\": \"endtask\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task9\"\r\n        }\r\n    ]\r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process0 created  with leastload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"processname\": \"Process0\",\r\n    \"conditionsList\": [\r\n        {\r\n            \"id\": \"start\",\r\n            \"name\": \"StartEvent\",\r\n            \"eventType\": \"startTask\",\r\n            \"next\": \"task1\"\r\n        },\r\n        {\r\n            \"id\": \"task1\",\r\n            \"name\": \"userEvent\",\r\n            \"eventType\": \"userTask\",\r\n             \"role\": \"infraadmin\",\r\n\t\t\t\"assignmentStrategy\": \"LEAST_LOAD\",\r\n            \"next\": \"task2\",\r\n            \"previous\": \"start\",\r\n            \"mapvalue\": \"approved\"\r\n        },\r\n\t\t{\r\n            \"id\": \"task2\",\r\n            \"name\": \"scriptEvent\",\r\n            \"eventType\": \"scriptTask\",\r\n            \"script\": \"System.out.println('script started');\",\r\n            \"next\": \"end1\",\r\n            \"previous\": \"task1\"\r\n           \r\n        },\r\n        {\r\n            \"id\": \"end1\",\r\n            \"name\": \"endEvent\",\r\n            \"eventType\": \"endTask\",\r\n            \"previous\": \"task2\"\r\n\t\t\t\r\n        }\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9055/createProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"createProcess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9055/reassignTaskToUser/Process0/task1/kriti",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9055/reassignTaskToUser/Process0/task1/kriti",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"reassignTaskToUser",
+						"Process0",
+						"task1",
+						"kriti"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "started Process2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9055/startProcessWithGAteway/Process2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9055",
+					"path": [
+						"startProcessWithGAteway",
+						"Process2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

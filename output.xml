@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process>
+    <Start id="545" name="Start" source="startTask" target="task1"/>
+    <scriptevent id="546" name="scriptevent" script="System.out.println('loan request generated');" source="startEvent" target="gateway1"/>
+    <scriptevent id="547" name="scriptevent" script="System.out.println('Account holder details approve');" source="gateway1" target="gateway4"/>
+    <scriptevent id="548" name="scriptevent" script="System.out.println('pending cibil varify');" source="gateway1" target="task5"/>
+    <scriptevent id="549" name="scriptevent" script="System.out.println('pending filed varify');" source="gateway1" target="task6"/>
+    <parallelGateway eventType="parallelGateway" id="550" name="" source="task1"/>
+    <userevent id="551" name="userevent" source="task3" target="gateway2"/>
+    <userevent id="552" name="userevent" source="task4" target="gateway3"/>
+    <trueEvent eventType="iftask" id="553" name="trueEvent"/>
+    <falseEvent eventType="iftask" id="554" name="falseEvent"/>
+    <trueEvent eventType="iftask" id="555" name="trueEvent"/>
+    <falseEvent eventType="iftask" id="556" name="falseEvent"/>
+    <scriptevent id="557" name="scriptevent" script="System.out.println('loan rejected by cibill');" source="gateway3" target="endEvent1"/>
+    <scriptevent id="558" name="scriptevent" script="System.out.println('loan rejected by field officer');" source="gateway2" target="endEvent2"/>
+    <inclusiveGateway eventType="inclusiveGateway" id="559" name="gatewayevent" target=""/>
+    <scriptevent id="558" name="scriptevent" script="System.out.println('loan rejected by field officer');" source="gateway2" target="endEvent2"/>
+    <scriptevent id="560" name="scriptevent" script="System.out.println('loan approved');" source="gateway4" target="endEvent3"/>
+    <endtask id="561" name="endtask" source="task7"/>
+    <endtask id="562" name="endtask" source="task8"/>
+    <endtask id="563" name="endtask" source="task9"/>
+</process>
